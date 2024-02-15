@@ -66,16 +66,61 @@ O ALS (Alternating Least Squares) em PySpark é um algoritmo de fatoração de m
 
 <img src="_images/als.png" width="75%"></img>
 
-### Referências
-*Apache Hive: https://www.databricks.com/br/glossary/apache-hive*<br>
-*Pyspark: https://www.databricks.com/br/glossary/pyspark*<br>
-*ALS: https://towardsdatascience.com/prototyping-a-recommender-system-step-by-step-part-2-alternating-least-square-als-matrix-4a76c58714a1*<br>
-*Curso de Ecossistema Hadoop: https://www.udemy.com/course/construindo-big-data-com-cluster-de-hadoop-e-ecossistema/*<br>
-
 ## Desafios do projeto
+- **Configuração do ecossistema Hadoop:** Embora não seja o foco do projeto em si, mas a configuração do ecossistema Hadoop localmente foi de enorme aprendizado para mim por se tratar de um mundo novo com diversas ferramentas e conceitos que tendem a se expandir conforme os anos por conta da necessidade de BigData nas grandes corporações. Vale destacar que todo o passo a passo de configuração foi elaborado pelo (Curso de construção de Big Data com Cluster de Hadoop e Ecossistema)[https://www.udemy.com/course/construindo-big-data-com-cluster-de-hadoop-e-ecossistema/].
+- **Configuração inicial do PySpark com Hive:** A configuração inicial para acessar o Hive através do PySpark foi desafiadora por conta da inexperiência nesse tipo de conexão. Encontrar fontes na web para solucionar os problemas que eu estava enfrentando não foi trivial, mas, após a conexão ser realizada com sucesso, ficou fácil compreender todos os parâmetros de configuração necessários para realizar a conexão do Pyspark com o Hive.
+
 <p style="color: blue"><b>TODO</b></p>
 
 ## Armazenamento dos dados no HDFS
+### Explicando brevemente meu ecossistema Hadoop
+O ecossistema Hadoop do projeto consiste em três master nodes (m1, m2, m3) e dois slave nodes (s1, s2). Cada nó tem funções específicas dentro do ecossistema. Abaixo estão as principais componentes e funções de cada nó:
+
+```bash
+m1: 1445 NameNode
+m1: 1971 ResourceManager
+m1: 2420 JobHistoryServer
+m1: 2624 QuorumPeerMain
+m1: 2762 RunJar
+m1: 2763 RunJar
+m1: 3107 RunJar
+m1: 3579 Jps
+m2: 1214 SecondaryNameNode
+m2: 1317 QuorumPeerMain
+m2: 1603 Jps
+m3: 1244 QuorumPeerMain
+m3: 1381 Jps
+s1: 1169 DataNode
+s1: 1287 NodeManager
+s1: 1492 Jps
+s2: 1173 DataNode
+s2: 1291 NodeManager
+s2: 1493 Jps
+```
+
+**Master Nodes (m1, m2, m3)**
+> **m1**
+> - ResourceManager Gerencia recursos e programação de trabalhos no cluster.
+> - JobHistoryServer Armazena logs de histórico de jobs.
+> - QuorumPeerMain Coordenação de configurações distribuídas.
+
+> **m2**
+> - SecondaryNameNode Ajuda o NameNode em tarefas de backup.
+> - QuorumPeerMain Coordenação de configurações distribuídas.
+
+> **m3**
+> - QuorumPeerMain Coordenação de configurações distribuídas.
+
+
+**Slave Nodes (s1, s2)**
+> **s1**
+> - DataNode: Armazenamento de dados no HDFS.
+> - NodeManager: Gerencia recursos no nó para execução de tarefas.
+
+> **s2**
+> - DataNode: Armazenamento de dados no HDFS.
+> - NodeManager: Gerencia recursos no nó para execução de tarefas.
+
 ### Criando tabelas temporárias
 Quando utilizarmos o comando LOAD, usaremos o OpenCSVSerde, um SerDe projetado para ler arquivos CSV. SerDe trata-se de uma abreviação para Serializer/Deserializer. O Hive usa a interface SerDe para ler e escrever dados em qualquer formato customizado. OpenCSVSerde trata todas as colunas como String, então irei criar tabelas temporárias e carregar dados nessas tabelas utilizando o OpenCSVSerde, para então converter as colunas das tabelas para os tipos de dados adequados.
 
@@ -228,3 +273,10 @@ FROM
 
 ## Implementação do algoritmo ALS
 <p style="color: blue"><b>TODO</b></p>
+
+### Referências e Links úteis
+*Apache Hive: https://www.databricks.com/br/glossary/apache-hive*<br>
+*Pyspark: https://www.databricks.com/br/glossary/pyspark*<br>
+*ALS: https://towardsdatascience.com/prototyping-a-recommender-system-step-by-step-part-2-alternating-least-square-als-matrix-4a76c58714a1*<br>
+*Curso de Ecossistema Hadoop: https://www.udemy.com/course/construindo-big-data-com-cluster-de-hadoop-e-ecossistema/*<br>
+*Utilizando Pyspark com Hive: https://sparkbyexamples.com/apache-hive/pyspark-sql-read-hive-table/*
