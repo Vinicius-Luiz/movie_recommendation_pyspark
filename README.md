@@ -16,17 +16,17 @@ A base de dados inclui arquivos como `ratings.csv`, `tags.csv`, `movies.csv`, `l
 
 Além disso, a base de dados ml-latest é uma base de desenvolvimento e não é apropriada para resultados de pesquisa compartilhados. Ela está disponível para download público, mas seu uso está sujeito a condições específicas, incluindo a necessidade de citar a base de dados em publicações resultantes do seu uso.
 
-- **ratings.csv:** Este arquivo contém todas as classificações na base de dados. Cada linha representa uma classificação de um filme por um usuário e tem o seguinte formato: userId, movieId, rating, timestamp. As classificações são feitas em uma escala de 5 estrelas, com incrementos de meio ponto (0,5 estrelas - 5,0 estrelas). Os timestamps representam segundos desde a meia-noite do Tempo Universal Coordenado (UTC) de 1º de janeiro de 1970.
+- **ratings.csv (33.8 mi):** Este arquivo contém todas as classificações na base de dados. Cada linha representa uma classificação de um filme por um usuário e tem o seguinte formato: userId, movieId, rating, timestamp. As classificações são feitas em uma escala de 5 estrelas, com incrementos de meio ponto (0,5 estrelas - 5,0 estrelas). Os timestamps representam segundos desde a meia-noite do Tempo Universal Coordenado (UTC) de 1º de janeiro de 1970.
 
-- **tags.csv:** Este arquivo contém todas as tags na base de dados. Cada linha representa uma tag aplicada a um filme por um usuário e tem o seguinte formato: userId, movieId, tag, timestamp. As tags são metadados gerados pelo usuário sobre filmes e geralmente consistem em uma única palavra ou frase curta.
+- **tags.csv (2.32 mi):** Este arquivo contém todas as tags na base de dados. Cada linha representa uma tag aplicada a um filme por um usuário e tem o seguinte formato: userId, movieId, tag, timestamp. As tags são metadados gerados pelo usuário sobre filmes e geralmente consistem em uma única palavra ou frase curta.
 
-- **movies.csv:** Este arquivo contém informações sobre os filmes na base de dados. Cada linha após a linha de cabeçalho representa um filme e tem o seguinte formato: movieId, title, genres. Os títulos dos filmes incluem o ano de lançamento entre parênteses. Os gêneros são uma lista separada por tubos e são selecionados de uma lista específica.
+- **movies.csv (86537 mil):** Este arquivo contém informações sobre os filmes na base de dados. Cada linha após a linha de cabeçalho representa um filme e tem o seguinte formato: movieId, title, genres. Os títulos dos filmes incluem o ano de lançamento entre parênteses. Os gêneros são uma lista separada por tubos e são selecionados de uma lista específica.
 
-- **links.csv:** Este arquivo contém identificadores que podem ser usados para vincular a outras fontes de dados de filmes. Cada linha após a linha de cabeçalho representa um filme e tem o seguinte formato: movieId, imdbId, tmdbId. Os identificadores são usados por diferentes provedores de dados de filmes, como MovieLens, IMDb e The Movie Database (TMDb).
+- **links.csv (86537 mil):** Este arquivo contém identificadores que podem ser usados para vincular a outras fontes de dados de filmes. Cada linha após a linha de cabeçalho representa um filme e tem o seguinte formato: movieId, imdbId, tmdbId. Os identificadores são usados por diferentes provedores de dados de filmes, como MovieLens, IMDb e The Movie Database (TMDb).
 
-- **genome-scores.csv:** Este arquivo contém dados de relevância de tags para filmes. Cada linha representa a relevância de uma tag para um filme e tem o seguinte formato: movieId, tagId, relevance. Esses dados fazem parte do Tag Genome, que codifica quão fortemente os filmes exibem propriedades específicas representadas por tags.
+- **genome-scores.csv (18.4 mi):** Este arquivo contém dados de relevância de tags para filmes. Cada linha representa a relevância de uma tag para um filme e tem o seguinte formato: movieId, tagId, relevance. Esses dados fazem parte do Tag Genome, que codifica quão fortemente os filmes exibem propriedades específicas representadas por tags.
 
-- **genome-tags.csv:** Este arquivo fornece descrições de tags para os IDs de tags no arquivo do Tag Genome. Cada linha após a linha de cabeçalho tem o seguinte formato: tagId, tag. Os valores de tagId são gerados quando o conjunto de dados é exportado, então eles podem variar de uma versão para outra dos conjuntos de dados do MovieLens.
+- **genome-tags.csv (1128 mil):** Este arquivo fornece descrições de tags para os IDs de tags no arquivo do Tag Genome. Cada linha após a linha de cabeçalho tem o seguinte formato: tagId, tag. Os valores de tagId são gerados quando o conjunto de dados é exportado, então eles podem variar de uma versão para outra dos conjuntos de dados do MovieLens.
 
 ## Tecnologias utilizadas
 
@@ -201,13 +201,14 @@ Criação de tabelas armazenadas no formato ORC, utilizando dados da tabelas tem
 CREATE TABLE movies STORED AS ORC 
 AS 
 SELECT 
-  CAST(movieid AS BIGINT) movieid,  -- Converte a coluna 'movieid' para o tipo BIGINT.
+  CAST(movieid AS BIGINT) AS movieid,  -- Converte a coluna 'movieid' para o tipo BIGINT.
   CASE 
     WHEN title LIKE '%, The %'
     THEN CONCAT('The ', regexp_replace(title, ', The ', ' '))  -- Adiciona "The " ao título que contém ", The ".
     ELSE title 
-  END title,  -- Renomeia a coluna 'title'.
-  SPLIT(genres, '\\|') AS genres  -- Converte a coluna 'genres' para um array
+  END AS title,  -- Renomeia a coluna 'title'.
+  CAST(regexp_extract(title, '\\((\\d{4})\\)', 1) AS INT) AS year,  -- Converte 'year' para inteiro.
+  SPLIT(genres, '\\|') AS genres  -- Converte a coluna 'genres' para um array.
 FROM 
   movies_tmp;
 ```
@@ -217,9 +218,10 @@ CREATE TABLE ratings STORED AS ORC
 AS 
 SELECT 
   userid,  -- Mantém a coluna 'userid'.
-  CAST(movieid AS BIGINT) movieid,  -- Converte a coluna 'movieid' para o tipo BIGINT.
-  CAST(rating AS DECIMAL) rating,  -- Converte a coluna 'rating' para o tipo DECIMAL.
-  CAST(rating_timestamp AS BIGINT) rating_timestamp  -- Converte a coluna 'rating_timestamp' para o tipo BIGINT.
+  CAST(movieid AS BIGINT) AS movieid,  -- Converte a coluna 'movieid' para o tipo BIGINT.
+  CAST(rating AS DECIMAL(10, 1)) AS rating,  -- Converte a coluna 'rating' para o tipo DECIMAL.
+  CAST(rating_timestamp AS BIGINT) AS rating_timestamp,  -- Converte a coluna 'rating_timestamp' para o tipo BIGINT.
+  to_utc_timestamp(from_unixtime(CAST(rating_timestamp AS BIGINT)), 'UTC') AS rating_date  -- Adiciona a coluna 'rating_date' convertendo 'rating_timestamp' para uma data.
 FROM 
   ratings_tmp;
 ```
@@ -229,9 +231,10 @@ CREATE TABLE tags STORED AS ORC
 AS 
 SELECT 
   userid,
-  CAST(movieid AS BIGINT) movieid,
+  CAST(movieid AS BIGINT) AS movieid,
   tag,
-  CAST(tag_timestamp AS BIGINT) tag_timestamp
+  CAST(tag_timestamp AS BIGINT) AS tag_timestamp,
+  to_utc_timestamp(from_unixtime(CAST(tag_timestamp AS BIGINT)), 'UTC') AS tag_date
 FROM 
   tags_tmp;
 ```
@@ -267,6 +270,10 @@ SELECT
 FROM 
   genome_scores_tmp;
 ```
+
+Destaca-se a criação da tabela `ratings`, onde, foi realizado a conversão de CSV para ORC realizando transformações nas colunas (convertendo string timestamp em date) em aproximadamente **33.8 milhões** de registros. A criação da tabela levou **14 minutos** para ser concluída e a leitura da tabela no Pyspark foi realizada em pouco mais de **0.7s**.
+<img src="_images/ratings.png"></img>
+<img src="_images/ratings2.png" width="50%"></img>
 
 ## Análise de dados dos filmes
 <p style="color: blue"><b>TODO</b></p>
