@@ -339,18 +339,18 @@ RegParam = 0.1<br>
 
 **Filmes que o usuário avaliou**
 
-| movieid | title | year | genres |
-|---------|-------|------|--------|
-| 4896 | Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) | 2001 | [Adventure, Children, Fantasy] |
-| 5816 | Harry Potter and the Chamber of Secrets (2002) | 2002 | [Adventure, Fantasy] |
-| 8368 | Harry Potter and the Prisoner of Azkaban (2004) | 2004 | [Adventure, Fantasy, IMAX] |
-| 40815 | Harry Potter and the Goblet of Fire (2005) | 2005 | [Adventure, Fantasy, Thriller, IMAX] |
-| 54001 | Harry Potter and the Order of the Phoenix (2007) | 2007 | [Adventure, Drama, Fantasy, IMAX] |
-| 69844 | Harry Potter and the Half-Blood Prince (2009) | 2009 | [Adventure, Fantasy, Mystery, Romance, IMAX] |
-| 81834 | Harry Potter and the Deathly Hallows: Part 1 (2010) | 2010 | [Action, Adventure, Fantasy, IMAX] |
-| 88125 | Harry Potter and the Deathly Hallows: Part 2 (2011) | 2011 | [Action, Adventure, Drama, Fantasy, Mystery, IMAX] |
-| 186777 | The Greater Good - Harry Potter Fan Film (2013) | 2013 | [Action, Adventure, Fantasy] |
-| 247038 | Harry Potter: A History Of Magic (2017) | 2017 | [Documentary] |
+| movieid | rating | title | year | genres |
+|---------|--------|-------|------|--------|
+| 4896 | 4.5 | Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) | 2001 | [Adventure, Children, Fantasy] |
+| 5816 | 3.5 | Harry Potter and the Chamber of Secrets (2002) | 2002 | [Adventure, Fantasy] |
+| 8368 | 5.0 | Harry Potter and the Prisoner of Azkaban (2004) | 2004 | [Adventure, Fantasy, IMAX] |
+| 40815 | 4.5 | Harry Potter and the Goblet of Fire (2005) | 2005 | [Adventure, Fantasy, Thriller, IMAX] |
+| 54001 | 3.5 | Harry Potter and the Order of the Phoenix (2007) | 2007 | [Adventure, Drama, Fantasy, IMAX] |
+| 69844 | 4.0 | Harry Potter and the Half-Blood Prince (2009) | 2009 | [Adventure, Fantasy, Mystery, Romance, IMAX] |
+| 81834 | 4.5 | Harry Potter and the Deathly Hallows: Part 1 (2010) | 2010 | [Action, Adventure, Fantasy, IMAX] |
+| 88125 | 5.0 | Harry Potter and the Deathly Hallows: Part 2 (2011) | 2011 | [Action, Adventure, Drama, Fantasy, Mystery, IMAX] |
+| 186777 | 2.0 | The Greater Good - Harry Potter Fan Film (2013) | 2013 | [Action, Adventure, Fantasy] |
+| 247038 | 2.5 | Harry Potter: A History Of Magic (2017) | 2017 | [Documentary] |
 
 **Filmes recomendados pelo modelo**
 
@@ -373,3 +373,4 @@ RegParam = 0.1<br>
 - *ALS: https://towardsdatascience.com/prototyping-a-recommender-system-step-by-step-part-2-alternating-least-square-als-matrix-4a76c58714a1*<br>
 - *Curso de Ecossistema Hadoop: https://www.udemy.com/course/construindo-big-data-com-cluster-de-hadoop-e-ecossistema/*<br>
 - *Utilizando Pyspark com Hive: https://sparkbyexamples.com/apache-hive/pyspark-sql-read-hive-table/*
+- *Alterando configuração de uso de memória do PySpark: https://stackoverflow.com/questions/32336915/pyspark-java-lang-outofmemoryerror-java-heap-space*
