@@ -60,11 +60,15 @@ MLlib é um wrapper para PySpark e a biblioteca de machine learning (ML) do Spar
 ### ALS - Alternating Least Squares
 O ALS (Alternating Least Squares) em PySpark é um algoritmo de fatoração de matrizes utilizado para sistemas de recomendação. Ele opera através de iterações, aproximando a matriz de classificações R como o produto de duas matrizes inferiores, X e Y. A abordagem iterativa envolve a constante resolução de uma matriz enquanto a outra é mantida fixa. Esta implementação específica utiliza uma abordagem bloqueada, otimizando a comunicação entre conjuntos de fatores ('usuários' e 'itens') por meio de blocos. O ALS é eficaz para dados de preferências implícitas, adaptando-se a uma matriz de preferência P, onde os elementos indicam confiança na preferência do usuário. Em resumo, o ALS é uma ferramenta fundamental para construção de sistemas de recomendação, proporcionando uma abordagem eficiente e escalável para encontrar padrões em grandes conjuntos de dados.
 
-<img src="_images/als.png" width="75%"></img>
+<img src="_images/als2.jpg" width="75%"></img>
 
 ## Desafios do projeto
 - **Configuração do ecossistema Hadoop:** Embora não seja o foco do projeto em si, mas a configuração do ecossistema Hadoop localmente foi de enorme aprendizado para mim por se tratar de um mundo novo com diversas ferramentas e conceitos que tendem a se expandir conforme os anos por conta da necessidade de BigData nas grandes corporações. Vale destacar que todo o passo a passo de configuração foi elaborado pelo (Curso de construção de Big Data com Cluster de Hadoop e Ecossistema)[https://www.udemy.com/course/construindo-big-data-com-cluster-de-hadoop-e-ecossistema/].
 - **Configuração inicial do PySpark com Hive:** A configuração inicial para acessar o Hive através do PySpark foi desafiadora por conta da inexperiência nesse tipo de conexão. Encontrar fontes na web para solucionar os problemas que eu estava enfrentando não foi trivial, mas, após a conexão ser realizada com sucesso, ficou fácil compreender todos os parâmetros de configuração necessários para realizar a conexão do Pyspark com o Hive.
+- **Uso de memória RAM:** Por conta do processamento em memória do PySpark, a hiperparamêtrização do modelo foi bastante custoso para o meu PC de 16GB RAM que estava executando o Pyspark e mantendo o Hadoop ativo com 5 máquinas virtuais ativas. Foi necessário alterar uma configuração do PySpark alterando o uso de memória para 12GB no arquivo `%SPARK_HOME%\conf\spark-defaults.conf`
+
+<img src="_images/ram.png" width=75%></img>
+<img src="_images/sparkconf.png" width=75%></img>
 
 <p style="color: blue"><b>TODO</b></p>
 
@@ -309,11 +313,63 @@ Gêneros menos comuns, como **Film-Noir e IMAX**, têm representações menores.
 <img src="_images/barplot_003.png"></img>
 
 ## Implementação do algoritmo ALS
-<p style="color: blue"><b>TODO</b></p>
+O modelo ALS será treinado apenas com filmes que têm mais de **100 avaliações**. Isso pode ser importante para garantir que os filmes usados no treinamento do modelo tenham recebido um número suficiente de avaliações para gerar recomendações mais robustas e significativas.
+
+Os números fornecidos indicam a distribuição do número de avaliações para os filmes:
+
+- O dataset contém **83.239** filmes.
+- **17.916** filmes contêm apenas 1 avaliação.
+- **10.161** filmes contêm apenas 2 avaliações.
+- **55.162** filmes contêm 3 avaliações ou mais.
+- **43.873** filmes contêm 5 avaliações ou mais.
+- **32.021** filmes contêm 10 avaliações ou mais.
+- **16.116** filmes contém 50 avaliações ou mais.
+- **12.253** filmes contêm 100 avaliações ou mais.
+- **6.929** filmes contêm mais avaliações do que a média (406).
+
+### Realizando a Hiperparametrização do modelo ALS
+Considerando que os ratings variam de 0 a 5, o Root Mean Square Error (RMSE) de **0.809221** indica que, em média, as previsões do modelo têm uma discrepância de aproximadamente 0.809221 unidades em relação aos valores reais em uma escala de 0 a 5.
+
+Root Mean Squared Error (RMSE) on test data = 0.809221<br>
+Rank = 20<br>
+MaxIter = 15<br>
+RegParam = 0.1<br>
+
+### Exemplo de uso
+
+**Filmes que o usuário avaliou**
+
+| movieid | title | year | genres |
+|---------|-------|------|--------|
+| 4896 | Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) | 2001 | [Adventure, Children, Fantasy] |
+| 5816 | Harry Potter and the Chamber of Secrets (2002) | 2002 | [Adventure, Fantasy] |
+| 8368 | Harry Potter and the Prisoner of Azkaban (2004) | 2004 | [Adventure, Fantasy, IMAX] |
+| 40815 | Harry Potter and the Goblet of Fire (2005) | 2005 | [Adventure, Fantasy, Thriller, IMAX] |
+| 54001 | Harry Potter and the Order of the Phoenix (2007) | 2007 | [Adventure, Drama, Fantasy, IMAX] |
+| 69844 | Harry Potter and the Half-Blood Prince (2009) | 2009 | [Adventure, Fantasy, Mystery, Romance, IMAX] |
+| 81834 | Harry Potter and the Deathly Hallows: Part 1 (2010) | 2010 | [Action, Adventure, Fantasy, IMAX] |
+| 88125 | Harry Potter and the Deathly Hallows: Part 2 (2011) | 2011 | [Action, Adventure, Drama, Fantasy, Mystery, IMAX] |
+| 186777 | The Greater Good - Harry Potter Fan Film (2013) | 2013 | [Action, Adventure, Fantasy] |
+| 247038 | Harry Potter: A History Of Magic (2017) | 2017 | [Documentary] |
+
+**Filmes recomendados pelo modelo**
+
+| movieid | rating | title                                      | year  | genres                                      |
+|---------|--------|--------------------------------------------|-------|---------------------------------------------|
+| 318     | 4.5356 | The Shawshank Redemption (1994)            | 1994  | ['Crime', 'Drama']                         |
+| 170705  | 4.4309 | Band of Brothers (2001)                     | 2001  | ['Action', 'Drama', 'War']                 |
+| 356     | 4.3959 | Forrest Gump (1994)                         | 1994  | ['Comedy', 'Drama', 'Romance', 'War']      |
+| 182723  | 4.3931 | Cosmos: A Spacetime Odissey                 |       | ['(no genres listed)']                     |
+| 159817  | 4.3703 | Planet Earth (2006)                        | 2006  | ['Documentary']                            |
+| 171011  | 4.3397 | Planet Earth II (2016)                     | 2016  | ['Documentary']                            |
+| 527     | 4.3299 | Schindler's List (1993)                     | 1993  | ['Drama', 'War']                           |
+| 2324    | 4.3226 | Life Is Beautiful (La Vita è bella) (1997) | 1997  | ['Comedy', 'Drama', 'Romance', 'War']      |
+| 3147    | 4.3178 | The Green Mile (1999)                       | 1999  | ['Crime', 'Drama']                         |
+| 1704    | 4.2943 | Good Will Hunting (1997)                    | 1997  | ['Drama', 'Romance']                       |
 
 ### Referências e Links úteis
-*Apache Hive: https://www.databricks.com/br/glossary/apache-hive*<br>
-*Pyspark: https://www.databricks.com/br/glossary/pyspark*<br>
-*ALS: https://towardsdatascience.com/prototyping-a-recommender-system-step-by-step-part-2-alternating-least-square-als-matrix-4a76c58714a1*<br>
-*Curso de Ecossistema Hadoop: https://www.udemy.com/course/construindo-big-data-com-cluster-de-hadoop-e-ecossistema/*<br>
-*Utilizando Pyspark com Hive: https://sparkbyexamples.com/apache-hive/pyspark-sql-read-hive-table/*
+- *Apache Hive: https://www.databricks.com/br/glossary/apache-hive*<br>
+- *Pyspark: https://www.databricks.com/br/glossary/pyspark*<br>
+- *ALS: https://towardsdatascience.com/prototyping-a-recommender-system-step-by-step-part-2-alternating-least-square-als-matrix-4a76c58714a1*<br>
+- *Curso de Ecossistema Hadoop: https://www.udemy.com/course/construindo-big-data-com-cluster-de-hadoop-e-ecossistema/*<br>
+- *Utilizando Pyspark com Hive: https://sparkbyexamples.com/apache-hive/pyspark-sql-read-hive-table/*
