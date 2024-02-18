@@ -10,13 +10,13 @@ Desenvolvendo uma engine de recomendação de filmes com ALS - PySpark
 - Implementação do algoritmo ALS
 
 ## Descrição da base de dados
-A base de dados ml-latest descreve a atividade de classificação de 5 estrelas e aplicação de tags de texto livre do MovieLens, um serviço de recomendação de filmes. Ela contém 33.832.162 classificações e 2.328.315 aplicações de tags em 86.537 filmes. Esses dados foram criados por 330.975 usuários entre 9 de janeiro de 1995 e 20 de julho de 2023. A base de dados foi gerada em 20 de julho de 2023.
+A base de dados ml-latest descreve a atividade de classificação de 5 estrelas e aplicação de tags de texto livre do MovieLens, um serviço de recomendação de filmes. Ela contém **33.832.162 classificações** e **2.328.315 aplicações de tags em 86.537 filmes**. Esses dados foram criados por **330.975 usuários** entre 9 de janeiro de 1995 e 20 de julho de 2023. A base de dados foi gerada em 20 de julho de 2023.
 
 A base de dados inclui arquivos como `ratings.csv`, `tags.csv`, `movies.csv`, `links.csv`, `genome-scores.csv` e `genome-tags.csv`. Ela também contém informações sobre a estrutura dos arquivos, como os formatos de dados e as condições de uso.
 
 Além disso, a base de dados ml-latest é uma base de desenvolvimento e não é apropriada para resultados de pesquisa compartilhados. Ela está disponível para download público, mas seu uso está sujeito a condições específicas, incluindo a necessidade de citar a base de dados em publicações resultantes do seu uso.
 
-- **ratings.csv (33.8 mi):** Este arquivo contém todas as classificações na base de dados. Cada linha representa uma classificação de um filme por um usuário e tem o seguinte formato: userId, movieId, rating, timestamp. As classificações são feitas em uma escala de 5 estrelas, com incrementos de meio ponto (0,5 estrelas - 5,0 estrelas). Os timestamps representam segundos desde a meia-noite do Tempo Universal Coordenado (UTC) de 1º de janeiro de 1970.
+- **ratings.csv (33.8 mi):** Este arquivo contém todas as classificações na base de dados. Cada linha representa uma classificação de um filme por um usuário e tem o seguinte formato: userId, movieId, rating, timestamp. As classificações são feitas em uma escala de 5 estrelas, com incrementos de meio ponto (0,5 estrelas - 5,0 estrelas).
 
 - **tags.csv (2.32 mi):** Este arquivo contém todas as tags na base de dados. Cada linha representa uma tag aplicada a um filme por um usuário e tem o seguinte formato: userId, movieId, tag, timestamp. As tags são metadados gerados pelo usuário sobre filmes e geralmente consistem em uma única palavra ou frase curta.
 
@@ -46,14 +46,10 @@ O HDFS, ou Hadoop Distributed File System, é um sistema de arquivos distribuíd
 ### Hive
 O Apache Hive é um software de data warehouse de código aberto projetado para ler, gravar e gerenciar grandes conjuntos de dados extraídos do Apache Hadoop Distributed File System (HDFS), um aspecto de um ecossistema Hadoop maior.
 
-Usamos o Apache Hive quando precisarmos realizar consultas ou manipulações em grandes conjuntos de dados, tais como seleção de registros ou colunas, agregação, sumarização, contagem de elementos, filtros ou atualizações em massa. Essas tarefas não precisam ser feitas em tempo real e o que queremos é obter insights a partir de grande conjuntos de dados, Big Data.
-
 <img src="_images/hive.png" width="50%"></img>
 
 ### Pyspark
 PySpark é uma API em Python para executar o Spark e foi lançado para oferecer suporte à colaboração entre Apache Spark e Python. O PySpark também oferece suporte à interface do Apache Spark com conjuntos de dados distribuídos resilientes (RDDs) na linguagem de programação Python. Isso é obtido aproveitando a biblioteca Py4J.
-
-Py4J é uma biblioteca popular incorporada ao PySpark que permite a interface dinâmica com objetos na JVM do Python. O PySpark possui muitas implementações de bibliotecas para programação eficiente e também possui bibliotecas externas compatíveis.
 
 #### PySparkSQL
 PySparkSQL é uma biblioteca PySpark para análises semelhantes a SQL em grandes quantidades de dados estruturados e semiestruturados. Você pode usar o PySparkSQL para executar queries SQL, trabalhar com o Apache Hive e até mesmo aplicar o HiveQL.
@@ -276,7 +272,41 @@ Destaca-se a criação da tabela `ratings`, onde, foi realizado a conversão de 
 <img src="_images/ratings2.png" width="50%"></img>
 
 ## Análise de dados dos filmes
-<p style="color: blue"><b>TODO</b></p>
+### Variação nas classificações ao longo do tempo
+A análise dos dados do gráfico de linha para o filme **Fight Club (1999)** sugere que, ao longo do tempo, a média das classificações dos usuários tende a aumentar. Isso pode ser interpretado como um indicativo de que o filme tem ganhado reconhecimento e apreciação ao longo dos anos, indicando uma possível ascensão para o status de filme cult.
+<img src="_images/lineplot_001.png"></img>
+
+O filme **Central do Brasil** (1998) parece ter tido uma recepção inicial muito positiva em 1999, com uma média de 4.24, indicando um forte impacto emocional ou apreciação do público.<br>
+
+**Central do Brasil** é um filme brasileiro dirigido por Walter Salles, estrelado por Fernanda Montenegro e Vinícius de Oliveira. Lançado em 1998, o filme foi indicado ao Oscar de Melhor Filme Estrangeiro e recebeu aclamação da crítica por suas performances, direção e narrativa poética.
+<img src="_images/lineplot_002.png"></img>
+
+### Análise de frequência de tags
+**Período de 1981 a 1990**<br>
+As palavras "original," "weird," e "comedy" sugerem um foco na originalidade e em gêneros cinematográficos distintos. A presença de "horror" indica uma inclinação para filmes de terror, enquanto "violence" e "action" sugerem uma preferência por elementos mais intensos e dinâmicos.
+<img src="_images/wordcloud_001.png"></img>
+
+**Período de 1921 a 2024**<br>
+A inclusão de "visually appealing" sugere uma valorização da estética visual, enquanto a menção de "good soundtrack" destaca a importância da trilha sonora, indicando um reconhecimento do papel significativo da música na experiência cinematográfica.
+<img src="_images/wordcloud_002.png"></img>
+
+### Distribuição de gêneros de filmes
+O **Drama é o gênero mais prevalente**, representando a maior quantidade de filmes no conjunto de dados. Essa predominância sugere a popularidade contínua de dramas ao longo dos anos e destaca seu apelo amplo ao público.<br>
+
+Gêneros menos comuns, como **Film-Noir e IMAX**, têm representações menores. Isso sugere que esses gêneros são mais específicos e podem atrair um público de nicho, indicando uma abordagem mais seletiva na produção desses filmes.
+<img src="_images/barplot_001.png"></img>
+
+**Comedy e Drama** são os gêneros mais consistentes ao longo das décadas. A presença significativa desses gêneros é observada desde as décadas mais antigas até as mais recentes, destacando sua popularidade contínua.
+<img src="_images/barplot_002.png"></img>
+
+### Classificações para diferentes gêneros de filmes
+**Film-Noir:** Com uma classificação de 3.92, Film-Noir é o gênero com a classificação mais alta na lista. Isso sugere que os filmes classificados como Film-Noir são geralmente bem recebidos pelos espectadores, indicando uma apreciação significativa por esse tipo de filme.<br>
+
+**War:** Logo abaixo, War possui uma classificação de 3.80, a segunda mais alta. Isso indica que os filmes de guerra também são bem avaliados pelos espectadores, sugerindo uma forte recepção para esse gênero.<br>
+
+**Horror:** Com uma classificação de 3.31, é o gênero com a classificação mais baixa. Isso sugere que os filmes de horror podem não ser tão bem recebidos em comparação com outros gêneros listados. Os espectadores tendem a dar pontuações mais baixas para filmes de horror, indicando uma recepção menos favorável para esse tipo de filme.
+
+<img src="_images/barplot_003.png"></img>
 
 ## Implementação do algoritmo ALS
 <p style="color: blue"><b>TODO</b></p>
