@@ -335,37 +335,90 @@ Rank = 20<br>
 MaxIter = 15<br>
 RegParam = 0.1<br>
 
-### Exemplo de uso
+### Recomendando filmes
 
-**Filmes que o usuário avaliou**
+Irei passar ao modelo minhas avaliações pessoais dos filmes assistidos por mim (Vinicius Luiz). Ao todo, foram **115 filmes** avaliados.
+<img src="_images/my_movies.png"></img>
 
-| movieid | rating | title | year | genres |
-|---------|--------|-------|------|--------|
-| 4896 | 4.5 | Harry Potter and the Sorcerer's Stone (a.k.a. Harry Potter and the Philosopher's Stone) (2001) | 2001 | [Adventure, Children, Fantasy] |
-| 5816 | 3.5 | Harry Potter and the Chamber of Secrets (2002) | 2002 | [Adventure, Fantasy] |
-| 8368 | 5.0 | Harry Potter and the Prisoner of Azkaban (2004) | 2004 | [Adventure, Fantasy, IMAX] |
-| 40815 | 4.5 | Harry Potter and the Goblet of Fire (2005) | 2005 | [Adventure, Fantasy, Thriller, IMAX] |
-| 54001 | 3.5 | Harry Potter and the Order of the Phoenix (2007) | 2007 | [Adventure, Drama, Fantasy, IMAX] |
-| 69844 | 4.0 | Harry Potter and the Half-Blood Prince (2009) | 2009 | [Adventure, Fantasy, Mystery, Romance, IMAX] |
-| 81834 | 4.5 | Harry Potter and the Deathly Hallows: Part 1 (2010) | 2010 | [Action, Adventure, Fantasy, IMAX] |
-| 88125 | 5.0 | Harry Potter and the Deathly Hallows: Part 2 (2011) | 2011 | [Action, Adventure, Drama, Fantasy, Mystery, IMAX] |
-| 186777 | 2.0 | The Greater Good - Harry Potter Fan Film (2013) | 2013 | [Action, Adventure, Fantasy] |
-| 247038 | 2.5 | Harry Potter: A History Of Magic (2017) | 2017 | [Documentary] |
+#### Geral
+Treinando o modelo com todas as avaliações disponíveis, esse foi os filmes recomendados para mim:
 
-**Filmes recomendados pelo modelo**
+| movieid | title                                    | rating | genres                                                |
+|---------|------------------------------------------|--------|-------------------------------------------------------|
+| 2959    | Fight Club (1999)                         | 4.3    | [Action, Crime, Drama, Thriller]                       |
+| 3761    | Blood In, Blood Out (1993)                | 4.3    | [Action, Crime, Drama, Thriller]                       |
+| 176601  | Black Mirror                              | 4.3    | [(no genres listed)]                                   |
+| 179053  | 2048: Nowhere to Run (2017)               | 4.3    | [Sci-Fi, Thriller]                                     |
+| 170705  | Band of Brothers (2001)                   | 4.2    | [Action, Drama, War]                                   |
+| 47      | Seven (a.k.a. Se7en) (1995)               | 4.2    | [Mystery, Thriller]                                    |
+| 109487  | Interstellar (2014)                       | 4.2    | [Sci-Fi, IMAX]                                         |
+| 231701  | Kill Bill: The Whole Bloody Affair (2011) | 4.2    | [Action, Crime]                                        |
+| 27022   | Thursday (1998)                           | 4.2    | [Action, Crime, Thriller]                              |
+| 79132   | Inception (2010)                          | 4.2    | [Action, Crime, Drama, Mystery, Sci-Fi, Thriller, IMAX]|
+| 121374  | Bill Burr: Why Do I Do This? (2008)       | 4.2    | [Comedy]                                               |
+| 74458   | Shutter Island (2010)                     | 4.2    | [Drama, Mystery, Thriller]                             |
+| 71838   | Law Abiding Citizen (2009)                | 4.2    | [Drama, Thriller]                                      |
+| 106782  | The Wolf of Wall Street (2013)            | 4.2    | [Comedy, Crime, Drama]                                 |
+| 182723  | Cosmos: A Spacetime Odissey               | 4.2    | [(no genres listed)]                                   |
+| 220528  | Twelve Angry Men (1954)                   | 4.1    | [Drama]                                                |
+| 48516   | The Departed (2006)                       | 4.1    | [Crime, Drama, Thriller]                               |
+| 4011    | Snatch (2000)                             | 4.1    | [Comedy, Crime, Thriller]                              |
+| 6187    | The Life of David Gale (2003)             | 4.1    | [Crime, Drama, Thriller]                               |
+| 181267  | Perfectos desconocidos (2017)             | 4.1    | [Comedy, Drama]                                        |
 
-| movieid | rating | title                                      | year  | genres                                      |
-|---------|--------|--------------------------------------------|-------|---------------------------------------------|
-| 318     | 4.5356 | The Shawshank Redemption (1994)            | 1994  | ['Crime', 'Drama']                         |
-| 170705  | 4.4309 | Band of Brothers (2001)                     | 2001  | ['Action', 'Drama', 'War']                 |
-| 356     | 4.3959 | Forrest Gump (1994)                         | 1994  | ['Comedy', 'Drama', 'Romance', 'War']      |
-| 182723  | 4.3931 | Cosmos: A Spacetime Odissey                 |       | ['(no genres listed)']                     |
-| 159817  | 4.3703 | Planet Earth (2006)                        | 2006  | ['Documentary']                            |
-| 171011  | 4.3397 | Planet Earth II (2016)                     | 2016  | ['Documentary']                            |
-| 527     | 4.3299 | Schindler's List (1993)                     | 1993  | ['Drama', 'War']                           |
-| 2324    | 4.3226 | Life Is Beautiful (La Vita è bella) (1997) | 1997  | ['Comedy', 'Drama', 'Romance', 'War']      |
-| 3147    | 4.3178 | The Green Mile (1999)                       | 1999  | ['Crime', 'Drama']                         |
-| 1704    | 4.2943 | Good Will Hunting (1997)                    | 1997  | ['Drama', 'Romance']                       |
+#### Filmes de animação-comédia para crianças
+
+Treinando o modelo com filmes de gênero animação-comédia para crianças, esse foi os filmes recomendados para mim:
+
+| movieid | title                                       | rating | genres                                                  |
+|---------|---------------------------------------------|--------|--------------------------------------------------------|
+| 134853  | Inside Out (2015)                           | 0.5    | [Adventure, Animation, Children, Comedy, Drama, Fantasy]|
+| 1       | Toy Story (1995)                            | 0.5    | [Adventure, Animation, Children, Comedy, Fantasy]       |
+| 78499   | Toy Story 3 (2010)                          | 0.5    | [Adventure, Animation, Children, Comedy, Fantasy, IMAX] |
+| 134849  | Duck Amuck (1953)                           | 0.5    | [Animation, Children, Comedy]                           |
+| 3114    | Toy Story 2 (1999)                          | 0.5    | [Adventure, Animation, Children, Comedy, Fantasy]       |
+| 163066  | Rabbit Seasoning (1952)                     | 0.5    | [Animation, Children, Comedy]                           |
+| 6377    | Finding Nemo (2003)                         | 0.5    | [Adventure, Animation, Children, Comedy]                |
+| 4886    | Monsters, Inc. (2001)                       | 0.5    | [Adventure, Animation, Children, Comedy, Fantasy]       |
+| 95311   | Presto (2008)                               | 0.4    | [Animation, Children, Comedy, Fantasy]                  |
+| 225173  | Soul (2020)                                 | 0.4    | [Adventure, Animation, Children, Comedy, Fantasy]       |
+| 136477  | One Froggy Evening (1955)                   | 0.4    | [Animation, Children, Comedy]                           |
+| 135867  | Rabbit Fire (1951)                          | 0.4    | [Animation, Children, Comedy]                           |
+| 167792  | What's Opera, Doc? (1957)                   | 0.4    | [Animation, Children, Comedy]                           |
+| 95858   | For the Birds (2000)                        | 0.4    | [Animation, Children, Comedy]                           |
+| 138702  | Feast (2014)                                | 0.4    | [Animation, Children, Comedy, Drama, Romance]           |
+| 72356   | Partly Cloudy (2009)                        | 0.4    | [Animation, Children, Comedy, Fantasy]                  |
+| 8961    | The Incredibles (2004)                      | 0.4    | [Action, Adventure, Animation, Children, Comedy]        |
+| 201588  | Toy Story 4 (2019)                          | 0.4    | [Adventure, Animation, Children, Comedy]                |
+| 178827  | Paddington 2 (2017)                         | 0.4    | [Adventure, Animation, Children, Comedy]                |
+| 1148    | Wallace & Gromit: The Wrong Trousers (1993) | 0.4    | [Animation, Children, Comedy, Crime]                    |
+
+#### Filmes para quem gostou de Velozes e Furiosos
+Treinando o modelo com avaliações dos usuários que classificaram como "bom" a saga Velozes e Furiosos, esse foi os filmes recomendados para mim:
+
+| movieid | title                                                                                | rating | genres                           |
+|---------|--------------------------------------------------------------------------------------|--------|----------------------------------|
+| 1365    | Ridicule (1996)                                                                      | 5.0    | [Drama]                          |
+| 103017  | The Body (2012)                                                                      | 4.9    | [Mystery, Thriller]              |
+| 33649   | Saving Face (2004)                                                                   | 4.9    | [Comedy, Drama, Romance]         |
+| 4547    | Stormy Monday (1988)                                                                 | 4.8    | [Crime, Drama]                   |
+| 7562    | Dobermann (1997)                                                                     | 4.7    | [Action, Crime]                  |
+| 284291  | Tetris (2023)                                                                        | 4.7    | [Drama]                          |
+| 147300  | Adventures Of Sherlock Holmes And Dr. Watson: The Twentieth Century Approaches (1986) | 4.7    | [Crime, Mystery]                 |
+| 68486   | Red Cliff Part II (Chi Bi Xia: Jue Zhan Tian Xia) (2009)                             | 4.6    | [Action, Drama, War]             |
+| 131433  | Confession of Murder (2012)                                                          | 4.6    | [Action, Thriller]               |
+| 6148    | White Dog (1982)                                                                     | 4.6    | [Drama, Horror, Thriller]        |
+| 47394   | Bon Cop, Bad Cop (2006)                                                              | 4.6    | [Action, Comedy, Crime, Thriller]|
+| 6329    | Manic (2001)                                                                         | 4.5    | [Drama]                          |
+| 96020   | Sidewalls (Medianeras) (2011)                                                        | 4.5    | [Drama]                          |
+| 50651   | Kenny (2006)                                                                         | 4.5    | [Comedy]                         |
+| 147326  | The Adventures of Sherlock Holmes and Doctor Watson: King of Blackmailers (1980)     | 4.5    | [Crime, Mystery]                 |
+| 8485    | Samsara (2001)                                                                       | 4.5    | [Adventure, Drama, Romance]      |
+| 1415    | Thieves (Voleurs, Les) (1996)                                                        | 4.5    | [Crime, Drama, Romance]          |
+| 207638  | La belle époque (2019)                                                               | 4.5    | [Comedy, Drama]                  |
+| 220528  | Twelve Angry Men (1954)                                                              | 4.5    | [Drama]                          |
+| 1757    | Fallen Angels (Duo luo tian shi) (1995)                                              | 4.4    | [Drama, Romance]                 |
+
 
 ### Referências e Links úteis
 - *Apache Hive: https://www.databricks.com/br/glossary/apache-hive*<br>
